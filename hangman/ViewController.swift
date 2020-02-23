@@ -11,6 +11,10 @@ import UIKit
 class ViewController: UIViewController {
     
     private var allWords = [String]()
+    private var guessingWord = ""
+    private var promptWord = ""
+    private var usedLetters = [String]()
+    @IBOutlet private weak var answerLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +36,79 @@ class ViewController: UIViewController {
                allWords = ["silkworm"]
        }
         
-        print(allWords)
+        startGame()
+    }
+    
+    private func startGame() {
+        guessingWord = allWords.randomElement()!
+        print(guessingWord)
+        updatePrompt()
+    }
+    
+    private func updatePrompt() {
+        promptWord.removeAll()
+        for letter in Array(guessingWord) {
+            let strLetter = String(letter)
+
+            if usedLetters.contains(strLetter) {
+                promptWord += strLetter
+            } else {
+                promptWord += "?"
+            }
+        }
+        print(promptWord)
+        answerLabel.text = promptWord.uppercased()
     }
 
-    @objc func enterGuess() {
+    @objc private func enterGuess() {
+        let ac = UIAlertController(title: "Enter letter guess", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] _ in
+            guard let answer = ac?.textFields?[0].text else { return }
+            self?.submit(answer)
+        }
+
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    private func submit(_ answer: String) {
+        let lowercasedAnswer = answer.lowercased()
+       
+        if isPossible(letter: lowercasedAnswer) {
+            if isOriginal(letter: lowercasedAnswer) {
+                usedLetters.insert(lowercasedAnswer, at: 0)
+                updatePrompt()
+            } else {
+                showErrorMessage(errorTitle: "Letter already entered.", errorMessage: "Choose another one.")
+            }
+        } else {
+            showErrorMessage(errorTitle: "Only enter one letter.", errorMessage: "Ain't got time for words.")
+        }
+    }
+    
+    private func isPossible(letter: String) -> Bool {
+        let tempWord = Array(letter)
         
+        if tempWord.count == 1 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func isOriginal(letter: String) -> Bool {
+        return !usedLetters.contains(letter)
+    }
+
+
+    private func showErrorMessage(errorTitle: String, errorMessage: String) {
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+     
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+     
+        present(ac, animated: true)
     }
 }
 
