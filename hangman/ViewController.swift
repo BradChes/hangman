@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Hangman"
+        
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let enter = UIBarButtonItem(title: "Enter", style: .plain, target: self, action: #selector(enterGuess))
         
