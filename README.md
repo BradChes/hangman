@@ -7,7 +7,15 @@
 A simple hangman game made with UIKit.
 
 ## Examples within this code
-To be included..,
+- UIAlertController
+- Text input in alerts
+- Closures
+- UIToolbar
 
 ## Demonstration
-To be included..,
+Small demonstration as to what the game does when on device.
+</br>
+<p align="center">
+<img src="demo/hangman.gif" alt="Application demonstration"
+	title="Hangman demonstration" width="250" height="500" />
+</p>
