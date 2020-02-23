@@ -41,7 +41,12 @@ class ViewController: UIViewController {
     
     private func startGame() {
         guessingWord = allWords.randomElement()!
-        
+        print(guessingWord)
+        updatePrompt()
+    }
+    
+    private func updatePrompt() {
+        promptWord.removeAll()
         for letter in Array(guessingWord) {
             let strLetter = String(letter)
 
@@ -51,7 +56,8 @@ class ViewController: UIViewController {
                 promptWord += "?"
             }
         }
-        answerLabel.text = promptWord
+        print(promptWord)
+        answerLabel.text = promptWord.uppercased()
     }
 
     @objc private func enterGuess() {
@@ -68,14 +74,14 @@ class ViewController: UIViewController {
     }
     
     private func submit(_ answer: String) {
-        let upperAnswer = answer.uppercased()
+        let lowercasedAnswer = answer.lowercased()
        
-        if isPossible(letter: upperAnswer) {
-            if isOriginal(letter: upperAnswer) {
-                usedLetters.insert(upperAnswer, at: 0)
-                return
+        if isPossible(letter: lowercasedAnswer) {
+            if isOriginal(letter: lowercasedAnswer) {
+                usedLetters.insert(lowercasedAnswer, at: 0)
+                updatePrompt()
             } else {
-                showErrorMessage(errorTitle: "Letter already entered.", errorMessage: "Choose another letter.")
+                showErrorMessage(errorTitle: "Letter already entered.", errorMessage: "Choose another one.")
             }
         } else {
             showErrorMessage(errorTitle: "Only enter one letter.", errorMessage: "Ain't got time for words.")
