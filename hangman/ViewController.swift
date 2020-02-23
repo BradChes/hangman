@@ -71,6 +71,10 @@ class ViewController: UIViewController {
         }
         print(promptWord)
         answerLabel.text = promptWord.uppercased()
+        
+        if !promptWord.contains("?") {
+            showRestartMessage(title: "Congratulations", message: "You bested the hangman! Go again?")
+        }
     }
     
     @objc private func enterGuess() {
@@ -97,7 +101,7 @@ class ViewController: UIViewController {
                 } else {
                     attempts += 1
                     if attempts == 7 {
-                        showRestartMessage()
+                        showRestartMessage(title: "Ran out of attempts!", message: "Please try again.")
                     } else {
                         showErrorMessage(errorTitle: "Letter not in word.", errorMessage: "Attempts has been increased.")
                     }
@@ -136,8 +140,8 @@ class ViewController: UIViewController {
         present(ac, animated: true)
     }
     
-    private func showRestartMessage() {
-        let ac = UIAlertController(title: "Ran out of attempts!", message: "Please try again.", preferredStyle: .alert)
+    private func showRestartMessage(title: String, message: String) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         ac.addAction(UIAlertAction(title: "Restart", style: .default, handler: restartGame))
             
