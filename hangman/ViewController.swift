@@ -10,14 +10,22 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet private weak var answerLabel: UILabel!
+    @IBOutlet private weak var attemptsLabel: UILabel!
     private var allWords = [String]()
     private var guessingWord = ""
     private var promptWord = ""
     private var usedLetters = [String]()
-    @IBOutlet private weak var answerLabel: UILabel!
+    private var attempts = 0 {
+        didSet {
+            attemptsLabel.text = "Attempts: \(attempts)/7"
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Hangman"
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let enter = UIBarButtonItem(title: "Enter", style: .plain, target: self, action: #selector(enterGuess))
@@ -25,6 +33,7 @@ class ViewController: UIViewController {
         toolbarItems = [spacer, enter]
         
         navigationController?.isToolbarHidden = false
+        attemptsLabel.text = "Attempts: \(attempts)/7"
         
         if let startWordsUrl = Bundle.main.url(forResource: "start", withExtension: "txt") {
                if let startWords = try? String(contentsOf: startWordsUrl) {
@@ -45,11 +54,17 @@ class ViewController: UIViewController {
         updatePrompt()
     }
     
+    @objc func restartGame(action: UIAlertAction) {
+        promptWord = ""
+        usedLetters.removeAll()
+        attempts = 0
+        startGame()
+    }
+    
     private func updatePrompt() {
         promptWord.removeAll()
         for letter in Array(guessingWord) {
             let strLetter = String(letter)
-
             if usedLetters.contains(strLetter) {
                 promptWord += strLetter
             } else {
@@ -58,8 +73,12 @@ class ViewController: UIViewController {
         }
         print(promptWord)
         answerLabel.text = promptWord.uppercased()
+        
+        if !promptWord.contains("?") {
+            showRestartMessage(title: "Congratulations", message: "You bested the hangman! Go again?")
+        }
     }
-
+    
     @objc private func enterGuess() {
         let ac = UIAlertController(title: "Enter letter guess", message: nil, preferredStyle: .alert)
         ac.addTextField()
@@ -78,8 +97,17 @@ class ViewController: UIViewController {
        
         if isPossible(letter: lowercasedAnswer) {
             if isOriginal(letter: lowercasedAnswer) {
-                usedLetters.insert(lowercasedAnswer, at: 0)
-                updatePrompt()
+                if isCorrect(letter: lowercasedAnswer) {
+                    usedLetters.insert(lowercasedAnswer, at: 0)
+                    updatePrompt()
+                } else {
+                    attempts += 1
+                    if attempts == 7 {
+                        showRestartMessage(title: "Ran out of attempts!", message: "Please try again.")
+                    } else {
+                        showErrorMessage(errorTitle: "Letter not in word.", errorMessage: "Attempts has been increased.")
+                    }
+                }
             } else {
                 showErrorMessage(errorTitle: "Letter already entered.", errorMessage: "Choose another one.")
             }
@@ -98,16 +126,27 @@ class ViewController: UIViewController {
         }
     }
     
+    private func isCorrect(letter: String) -> Bool {
+        return Array(guessingWord).contains(Character(letter))
+    }
+    
     private func isOriginal(letter: String) -> Bool {
         return !usedLetters.contains(letter)
     }
-
 
     private func showErrorMessage(errorTitle: String, errorMessage: String) {
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
      
         ac.addAction(UIAlertAction(title: "OK", style: .default))
      
+        present(ac, animated: true)
+    }
+    
+    private func showRestartMessage(title: String, message: String) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        ac.addAction(UIAlertAction(title: "Restart", style: .default, handler: restartGame))
+            
         present(ac, animated: true)
     }
 }
