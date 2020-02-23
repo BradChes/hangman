@@ -55,7 +55,54 @@ class ViewController: UIViewController {
     }
 
     @objc private func enterGuess() {
+        let ac = UIAlertController(title: "Enter letter guess", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] _ in
+            guard let answer = ac?.textFields?[0].text else { return }
+            self?.submit(answer)
+        }
+
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    private func submit(_ answer: String) {
+        let upperAnswer = answer.uppercased()
+       
+        if isPossible(letter: upperAnswer) {
+            if isOriginal(letter: upperAnswer) {
+                usedLetters.insert(upperAnswer, at: 0)
+                return
+            } else {
+                showErrorMessage(errorTitle: "Letter already entered.", errorMessage: "Choose another letter.")
+            }
+        } else {
+            showErrorMessage(errorTitle: "Only enter one letter.", errorMessage: "Ain't got time for words.")
+        }
+    }
+    
+    private func isPossible(letter: String) -> Bool {
+        let tempWord = Array(letter)
         
+        if tempWord.count == 1 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func isOriginal(letter: String) -> Bool {
+        return !usedLetters.contains(letter)
+    }
+
+
+    private func showErrorMessage(errorTitle: String, errorMessage: String) {
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+     
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+     
+        present(ac, animated: true)
     }
 }
 
