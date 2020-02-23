@@ -11,7 +11,9 @@ import UIKit
 class ViewController: UIViewController {
     
     private var allWords = [String]()
-    private var guessingWord: String?
+    private var guessingWord = ""
+    private var promptWord = ""
+    private var usedLetters = [String]()
     @IBOutlet private weak var answerLabel: UILabel!
     
     override func viewDidLoad() {
@@ -38,8 +40,18 @@ class ViewController: UIViewController {
     }
     
     private func startGame() {
-        guessingWord = allWords.randomElement()
-        answerLabel.text = guessingWord?.uppercased()
+        guessingWord = allWords.randomElement()!
+        
+        for letter in Array(guessingWord) {
+            let strLetter = String(letter)
+
+            if usedLetters.contains(strLetter) {
+                promptWord += strLetter
+            } else {
+                promptWord += "?"
+            }
+        }
+        answerLabel.text = promptWord
     }
 
     @objc private func enterGuess() {
