@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     
     private var allWords = [String]()
+    private var guessingWord: String?
+    @IBOutlet private weak var answerLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +34,15 @@ class ViewController: UIViewController {
                allWords = ["silkworm"]
        }
         
-        print(allWords)
+        startGame()
+    }
+    
+    private func startGame() {
+        guessingWord = allWords.randomElement()
+        answerLabel.text = guessingWord?.uppercased()
     }
 
-    @objc func enterGuess() {
+    @objc private func enterGuess() {
         
     }
 }
