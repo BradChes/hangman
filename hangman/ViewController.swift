@@ -9,7 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    private var allWords = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,6 +21,18 @@ class ViewController: UIViewController {
         toolbarItems = [spacer, enter]
         
         navigationController?.isToolbarHidden = false
+        
+        if let startWordsUrl = Bundle.main.url(forResource: "start", withExtension: "txt") {
+               if let startWords = try? String(contentsOf: startWordsUrl) {
+                   allWords = startWords.components(separatedBy: "\n")
+               }
+       }
+        
+        if allWords.isEmpty {
+               allWords = ["silkworm"]
+       }
+        
+        print(allWords)
     }
 
     @objc func enterGuess() {
