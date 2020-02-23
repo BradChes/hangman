@@ -15,9 +15,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CPm-xV-wwt">
-                                <rect key="frame" x="155.5" y="448.5" width="103" height="53"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CPm-xV-wwt">
+                                <rect key="frame" x="157" y="448.5" width="100" height="53"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ild-2K-foU">
+                                <rect key="frame" x="20" y="88" width="118" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -25,13 +31,17 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="CPm-xV-wwt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="0ph-ZV-IQO"/>
+                            <constraint firstItem="Ild-2K-foU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VFj-S5-J4E"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ild-2K-foU" secondAttribute="trailing" constant="276" id="YuL-i3-3uA"/>
                             <constraint firstItem="CPm-xV-wwt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="ZiU-D0-kDB"/>
+                            <constraint firstItem="Ild-2K-foU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="nD2-lu-Arm"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="yeM-W7-JIa"/>
                     <connections>
-                        <outlet property="answerLabel" destination="CPm-xV-wwt" id="POC-4a-3S4"/>
+                        <outlet property="answerLabel" destination="CPm-xV-wwt" id="iiW-Wr-2Z1"/>
+                        <outlet property="attemptsLabel" destination="Ild-2K-foU" id="l6h-00-yoW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
