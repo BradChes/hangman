@@ -52,6 +52,13 @@ class ViewController: UIViewController {
         updatePrompt()
     }
     
+    @objc func restartGame(action: UIAlertAction) {
+        promptWord = ""
+        usedLetters.removeAll()
+        attempts = 0
+        startGame()
+    }
+    
     private func updatePrompt() {
         promptWord.removeAll()
         for letter in Array(guessingWord) {
@@ -65,7 +72,7 @@ class ViewController: UIViewController {
         print(promptWord)
         answerLabel.text = promptWord.uppercased()
     }
-
+    
     @objc private func enterGuess() {
         let ac = UIAlertController(title: "Enter letter guess", message: nil, preferredStyle: .alert)
         ac.addTextField()
@@ -89,7 +96,11 @@ class ViewController: UIViewController {
                     updatePrompt()
                 } else {
                     attempts += 1
-                     showErrorMessage(errorTitle: "Letter not in word.", errorMessage: "Attempts has been increased.")
+                    if attempts == 7 {
+                        showRestartMessage()
+                    } else {
+                        showErrorMessage(errorTitle: "Letter not in word.", errorMessage: "Attempts has been increased.")
+                    }
                 }
             } else {
                 showErrorMessage(errorTitle: "Letter already entered.", errorMessage: "Choose another one.")
@@ -122,6 +133,14 @@ class ViewController: UIViewController {
      
         ac.addAction(UIAlertAction(title: "OK", style: .default))
      
+        present(ac, animated: true)
+    }
+    
+    private func showRestartMessage() {
+        let ac = UIAlertController(title: "Ran out of attempts!", message: "Please try again.", preferredStyle: .alert)
+        
+        ac.addAction(UIAlertAction(title: "Restart", style: .default, handler: restartGame))
+            
         present(ac, animated: true)
     }
 }
